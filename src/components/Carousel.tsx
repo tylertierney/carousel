@@ -71,6 +71,7 @@ export const Carousel: FC<ICarouselProps> = (props) => {
                 key={idx}
                 className="carouselItem"
                 style={{
+                  display: "flex",
                   translate:
                     -1 *
                       (carouselIndex / numberToDisplay) *
