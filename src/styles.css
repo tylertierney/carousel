@@ -1,0 +1,70 @@
+.controller {
+  display: flex;
+  width: 100%;
+}
+
+.arrowContainer {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+
+.track {
+  overflow: hidden;
+  display: flex;
+}
+
+/* .reviewContainer {
+  padding: 1rem;
+  display: flex;
+  transition: 0.5s ease-in-out;
+}
+
+.review {
+  background-color: #e9e6e2;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+.comment,
+.nameAndTitle {
+  padding: 0.2rem;
+}
+
+.nameAndTitle {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.title {
+  opacity: 0.5;
+} */
+
+.dotsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.6rem 0;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 100%;
+  background-color: black;
+  opacity: 0.3;
+}
+
+.dot.active {
+  opacity: 0.6;
+}
