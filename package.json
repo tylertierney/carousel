@@ -1,5 +1,5 @@
 {
-  "name": "carousel",
+  "name": "@tylertierney/carousel",
   "version": "1.0.0",
   "description": "",
   "main": "dist/cjs/index.js",
@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "@tylertierney:registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "rm -rf dist/ && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
