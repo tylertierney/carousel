@@ -69,7 +69,7 @@ export const Carousel: FC<ICarouselProps> = (props) => {
             return (
               <div
                 key={idx}
-                className="reviewContainer"
+                className="carouselItem"
                 style={{
                   translate:
                     -1 *
