@@ -2,47 +2,83 @@ import {
   MdOutlineArrowBackIosNew,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
-import {
+import React, {
   DetailedHTMLProps,
   FC,
   HTMLAttributes,
   ReactNode,
   useEffect,
+  useLayoutEffect,
+  useRef,
   useState,
 } from "react";
-import React from "react";
+
+const defaultBreakpoints: ICarouselProps["breakpoints"] = [
+  [480, 2],
+  [768, 3],
+  [1024, 4],
+  [1201, 5],
+];
+
+const getNumberToDisplay = (
+  breakpoints: [number, number][],
+  detectedWidth: number
+): number => {
+  let result = 1;
+  for (const [width, num] of breakpoints) {
+    if (detectedWidth >= width) result = num;
+  }
+  return result;
+};
 
 export interface ICarouselProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   children: ReactNode[];
+  breakpoints?: [number, number][];
 }
 
-export const Carousel: FC<ICarouselProps> = (props) => {
-  const { children, style } = props;
+export const Carousel: FC<ICarouselProps> = ({
+  children,
+  style,
+  breakpoints = defaultBreakpoints,
+  ...props
+}) => {
+  // const { children, style, breakpoints } = props;
 
-  const width = document.body.getBoundingClientRect().width;
-  const [screenWidth, setScreenWidth] = useState(width);
+  const [trackWidth, setTrackWidth] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const carouselRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (carouselRef.current) {
+      const detectedWidth = parseInt(
+        window.getComputedStyle(carouselRef.current).width,
+        10
+      );
+      setTrackWidth(detectedWidth);
+    }
+  }, []);
 
   useEffect(() => {
     const callback = () => {
-      const width = document.body.getBoundingClientRect().width;
-      setScreenWidth(width);
+      if (carouselRef.current) {
+        const detectedWidth = parseInt(
+          window.getComputedStyle(carouselRef.current).width,
+          10
+        );
+        setTrackWidth(detectedWidth);
+      }
     };
-
     window.addEventListener("resize", callback);
-
     return () => window.removeEventListener("resize", callback);
-  }, []);
+  }, [carouselRef, breakpoints]);
 
   if (!children) return null;
 
-  let numberToDisplay = 3;
-  if (screenWidth < 700) numberToDisplay = 2;
-  if (screenWidth < 480) numberToDisplay = 1;
+  const numberToDisplay = getNumberToDisplay(breakpoints, trackWidth);
 
   return (
-    <div style={style} {...props}>
+    <div style={style} {...props} ref={carouselRef}>
       <div className="controller" style={{ display: "flex", width: "100%" }}>
         <div
           className="arrowContainer"
