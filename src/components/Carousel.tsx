@@ -35,12 +35,16 @@ export interface ICarouselProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   children: ReactNode[];
   breakpoints?: [number, number][];
+  navigator?: ReactNode;
+  navigatorActive?: ReactNode;
 }
 
 export const Carousel: FC<ICarouselProps> = ({
   children,
   style,
   breakpoints = defaultBreakpoints,
+  navigator,
+  navigatorActive,
   ...props
 }) => {
   // const { children, style, breakpoints } = props;
@@ -76,6 +80,34 @@ export const Carousel: FC<ICarouselProps> = ({
   if (!children) return null;
 
   const numberToDisplay = getNumberToDisplay(breakpoints, trackWidth);
+
+  const getNavigatorElement = (
+    idx: number,
+    numberToDisplay: number
+  ): ReactNode => {
+    let active = false;
+    if (
+      idx * numberToDisplay > carouselIndex - numberToDisplay &&
+      idx * numberToDisplay < carouselIndex + numberToDisplay
+    )
+      active = true;
+
+    if (!navigator)
+      return (
+        <div
+          style={{
+            height: "12px",
+            width: "12px",
+            borderRadius: "100%",
+            backgroundColor: "black",
+            opacity: active ? 0.6 : 0.3,
+          }}
+        ></div>
+      );
+
+    if (navigatorActive && active) return navigatorActive;
+    return navigator;
+  };
 
   return (
     <div style={style} {...props} ref={carouselRef}>
@@ -135,7 +167,6 @@ export const Carousel: FC<ICarouselProps> = ({
           <MdOutlineArrowForwardIos
             cursor="pointer"
             onClick={() => {
-              console.log(carouselIndex);
               setCarouselIndex((prev) =>
                 prev + numberToDisplay >= children.length
                   ? 0
@@ -146,7 +177,7 @@ export const Carousel: FC<ICarouselProps> = ({
         </div>
       </div>
       <div
-        className="dotsContainer"
+        className="navigation"
         style={{
           display: "flex",
           justifyContent: "center",
@@ -160,23 +191,11 @@ export const Carousel: FC<ICarouselProps> = ({
             return (
               <div
                 key={idx}
-                className={`dot ${
-                  idx * numberToDisplay > carouselIndex - numberToDisplay &&
-                  idx * numberToDisplay < carouselIndex + numberToDisplay &&
-                  "active"
-                }`}
-                style={{
-                  height: "12px",
-                  width: "12px",
-                  borderRadius: "100%",
-                  backgroundColor: "black",
-                  opacity:
-                    idx * numberToDisplay > carouselIndex - numberToDisplay &&
-                    idx * numberToDisplay < carouselIndex + numberToDisplay
-                      ? 0.6
-                      : 0.3,
-                }}
-              ></div>
+                style={{ cursor: "pointer" }}
+                onClick={() => setCarouselIndex(idx * numberToDisplay)}
+              >
+                {getNavigatorElement(idx, numberToDisplay)}
+              </div>
             );
           })}
       </div>
