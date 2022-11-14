@@ -111,10 +111,7 @@ export const Carousel: FC<ICarouselProps> = ({
 
   return (
     <div style={style} {...props} ref={carouselRef}>
-      <div
-        className="controller"
-        style={{ display: "flex", width: "100%", position: "relative" }}
-      >
+      <div className="controller" style={{ display: "flex", width: "100%" }}>
         <div
           className="arrowContainer"
           style={{
