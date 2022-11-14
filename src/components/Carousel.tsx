@@ -85,7 +85,15 @@ export const Carousel: FC<ICarouselProps> = (props) => {
             );
           })}
         </div>
-        <div className="arrowContainer">
+        <div
+          className="arrowContainer"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: "1.5rem",
+            padding: "1rem",
+          }}
+        >
           <MdOutlineArrowForwardIos
             cursor="pointer"
             onClick={() => {
